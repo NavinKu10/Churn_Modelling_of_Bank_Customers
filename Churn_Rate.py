@@ -61,7 +61,6 @@ from keras.models import Sequential
 from keras.layers import Dense
 
 #k-fold on dev set
-
 from sklearn.model_selection import StratifiedKFold
 kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=1)
 acc = []
@@ -76,7 +75,8 @@ for train, test in kfold.split(x_dev, y_dev):
   scores = cf.evaluate(x_dev[test], y_dev[test], verbose=0)
   acc.append(scores[1] * 100)
 
-cf = Sequential()
+#making the ann to train the model
+  cf = Sequential()
   cf.add(Dense(output_dim = 16, init = 'uniform', activation = 'relu', input_dim = 13))
   cf.add(Dense(output_dim = 8, init = 'uniform', activation = 'relu', input_dim = 16))
   cf.add(Dense(output_dim = 1, init = 'uniform', activation = 'sigmoid'))
@@ -84,16 +84,15 @@ cf = Sequential()
   cf.fit(x_train, y_train, batch_size = 10, nb_epoch = 25)
 
 np.mean(acc)
-
 np.std(acc)
 
+#predicting the model
 y_pred = cf.predict(x_test)
 y_pred = (y_pred > 0.5)
 
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
-
 cm
 
 (185+33)/(185+33+33)
-
+86.8525896
